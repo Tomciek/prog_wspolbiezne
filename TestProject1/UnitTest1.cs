@@ -8,7 +8,7 @@ namespace TestProject1
         [TestMethod]
         public void TestMultiplication()
         {
-            int y = Wspó³bie¿ne.Program.multiplication(2, 3);
+            int y = mnozenie.Program.multiplication(2, 3);
             Assert.AreEqual(6, y);
         }
     }

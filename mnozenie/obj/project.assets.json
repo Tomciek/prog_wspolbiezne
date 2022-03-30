@@ -8,19 +8,19 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\tomek\\.nuget\\packages\\": {}
+    "C:\\Users\\PC\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\tomek\\Desktop\\programowanie\\mnozenie\\mnozenie.csproj",
+      "projectUniqueName": "C:\\Users\\PC\\Source\\Repos\\prog_wspolbiezne\\mnozenie\\mnozenie.csproj",
       "projectName": "mnozenie",
-      "projectPath": "C:\\Users\\tomek\\Desktop\\programowanie\\mnozenie\\mnozenie.csproj",
-      "packagesPath": "C:\\Users\\tomek\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\tomek\\Desktop\\programowanie\\mnozenie\\obj\\",
+      "projectPath": "C:\\Users\\PC\\Source\\Repos\\prog_wspolbiezne\\mnozenie\\mnozenie.csproj",
+      "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\PC\\Source\\Repos\\prog_wspolbiezne\\mnozenie\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\tomek\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -60,7 +60,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
       }
     }
   }

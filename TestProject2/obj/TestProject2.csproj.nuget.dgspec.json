@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\tomek\\Desktop\\programowanie\\TestProject2\\TestProject2.csproj": {}
+    "C:\\Users\\PC\\Source\\Repos\\prog_wspolbiezne\\TestProject2\\TestProject2.csproj": {}
   },
   "projects": {
-    "C:\\Users\\tomek\\Desktop\\programowanie\\mnozenie\\mnozenie.csproj": {
+    "C:\\Users\\PC\\Source\\Repos\\prog_wspolbiezne\\mnozenie\\mnozenie.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\tomek\\Desktop\\programowanie\\mnozenie\\mnozenie.csproj",
+        "projectUniqueName": "C:\\Users\\PC\\Source\\Repos\\prog_wspolbiezne\\mnozenie\\mnozenie.csproj",
         "projectName": "mnozenie",
-        "projectPath": "C:\\Users\\tomek\\Desktop\\programowanie\\mnozenie\\mnozenie.csproj",
-        "packagesPath": "C:\\Users\\tomek\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\tomek\\Desktop\\programowanie\\mnozenie\\obj\\",
+        "projectPath": "C:\\Users\\PC\\Source\\Repos\\prog_wspolbiezne\\mnozenie\\mnozenie.csproj",
+        "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\PC\\Source\\Repos\\prog_wspolbiezne\\mnozenie\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\tomek\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -54,21 +54,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\tomek\\Desktop\\programowanie\\TestProject2\\TestProject2.csproj": {
+    "C:\\Users\\PC\\Source\\Repos\\prog_wspolbiezne\\TestProject2\\TestProject2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\tomek\\Desktop\\programowanie\\TestProject2\\TestProject2.csproj",
+        "projectUniqueName": "C:\\Users\\PC\\Source\\Repos\\prog_wspolbiezne\\TestProject2\\TestProject2.csproj",
         "projectName": "TestProject2",
-        "projectPath": "C:\\Users\\tomek\\Desktop\\programowanie\\TestProject2\\TestProject2.csproj",
-        "packagesPath": "C:\\Users\\tomek\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\tomek\\Desktop\\programowanie\\TestProject2\\obj\\",
+        "projectPath": "C:\\Users\\PC\\Source\\Repos\\prog_wspolbiezne\\TestProject2\\TestProject2.csproj",
+        "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\PC\\Source\\Repos\\prog_wspolbiezne\\TestProject2\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\tomek\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -82,8 +82,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\tomek\\Desktop\\programowanie\\mnozenie\\mnozenie.csproj": {
-                "projectPath": "C:\\Users\\tomek\\Desktop\\programowanie\\mnozenie\\mnozenie.csproj"
+              "C:\\Users\\PC\\Source\\Repos\\prog_wspolbiezne\\mnozenie\\mnozenie.csproj": {
+                "projectPath": "C:\\Users\\PC\\Source\\Repos\\prog_wspolbiezne\\mnozenie\\mnozenie.csproj"
               }
             }
           }
@@ -130,7 +130,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
         }
       }
     }
