@@ -1,0 +1,6 @@
+﻿using Logic;
+
+namespace Model
+{
+
+}
