@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    internal class Class1
+    internal class DataAPI : DataAbstractAPI
     {
+        public override void Connect()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
