@@ -1,6 +1,0 @@
-﻿using Logic;
-
-namespace Model
-{
-
-}
