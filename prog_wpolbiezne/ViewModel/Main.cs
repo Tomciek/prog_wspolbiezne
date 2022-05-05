@@ -3,9 +3,9 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ViewModel;
 
-namespace VievModel
+namespace ViewModel
 {
-    public class ViewFull : ViewModel.ViewModel
+    public class ViewFull : ViewModel
     {
         public ViewFull()
         {

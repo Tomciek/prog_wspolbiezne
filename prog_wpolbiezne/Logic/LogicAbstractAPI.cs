@@ -26,11 +26,11 @@ namespace Logic
                 dataLayer = dataLayer;
             }
 
-            public override ObservableCollection<Circle> CreateCircles(int circleCountdouble, double poolWidth, double poolHeight)
+            public override ObservableCollection<Circle> CreateCircles(int numberOfCircles, double poolWidth, double poolHeight)
             {
                 ObservableCollection<Circle> circles = new ObservableCollection<Circle>();
                 Random random = new Random();
-                for (int i = 0; i < circles.Count; i++)
+                for (int i = 0; i < numberOfCircles; i++)
                 {
                     Circle circle = new Circle(random.Next(5, 10), random.Next(20, (int)poolWidth - 20), random.Next(20, (int)poolHeight - 20));
                     circles.Add(circle);
