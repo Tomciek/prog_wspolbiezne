@@ -6,7 +6,16 @@
         xmlns:local="clr-namespace:View"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Grid Background="LightGray">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="99*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Label Content="Enter how much circles do you want: " HorizontalAlignment="Left" Margin="5,23,0,0" VerticalAlignment="Top" FontSize="20"/>
+        <TextBox HorizontalAlignment="Left" Height="25" Margin="350,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" RenderTransformOrigin="0.532,0.526"/>
+        <Button Content="Start" HorizontalAlignment="Left" Height="30" Margin="520,30,0,0" VerticalAlignment="Top" Width="90"/>
+        <Button Content="Stop" HorizontalAlignment="Left" Height="30" Margin="650,30,0,0" VerticalAlignment="Top" Width="90"/>
+        <Border BorderBrush="Black" BorderThickness="1" Margin="10,100,2,10"/>
 
     </Grid>
 </Window>
