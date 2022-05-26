@@ -1,4 +1,4 @@
-﻿namespace Data
+namespace Data
 {
     public abstract class DataAbstractAPI
     {
@@ -8,5 +8,17 @@
         }
 
         public abstract void Connect();
+
+        public abstract void CreatePoolWithBalls(int amount, double widthOfCanvas, double heightOfCanvas);
+
+        public abstract List <Circle> GetCircles();
+
+        public abstract void InterruptThreads();
+
+        public abstract void StartThreads();
+
+        public abstract double GetPoolWidth();
+
+        public abstract double GetPoolHeight();
     }
 }
