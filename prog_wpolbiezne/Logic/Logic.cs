@@ -1,74 +1,93 @@
 ﻿using Data;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Logic
 {
-    public class Circle
+    internal class LogicClass : LogicAbstractAPI
     {
-        private int x;
-        private int y;
-        private readonly int r;
-        private int speedX;
-        private int speedY;
+        private readonly DataAbstractAPI DataLayer;
+        private static Collection<LogicCircle> circlesCollection = new();
+        private static double height;
+        private static double width;
 
-        public Circle(int x, int y, int r)
+        public LogicClass(DataAbstractAPI dataLayer)
         {
-            Random random = new Random();
-            this.x = x;
-            this.y = y;
-            this.r = r;
-            if (speedX == 0)
+            DataLayer = dataLayer;
+        }
+
+        public override ObservableCollection<LogicCircle> CreateCircles(int numberOfCircles, double poolWidth, double poolHeight)
+        {
+            List<Circle> circles = new();
+            ObservableCollection<LogicCircle> logicCircles = new();
+            DataLayer.CreatePoolWithBalls(numberOfCircles, poolWidth, poolHeight);
+            height = DataLayer.GetPoolHeight();
+            width = DataLayer.GetPoolWidth();
+            circles = DataLayer.GetCircles();
+            foreach (Circle c in circles)
             {
-                this.speedX = random.Next();
+                LogicCircle logicCircle = new LogicCircle(c);
+                c.PropertyChanged += logicCircle.Update!;
+                circlesCollection.Add(logicCircle);
+                logicCircles.Add(logicCircle);
             }
-            if (speedY == 0)
+            return logicCircles;
+        }
+
+        private static bool CirclesCollision(LogicCircle circle)
+        {
+            foreach (LogicCircle c in circlesCollection)
             {
-                this.speedY = random.Next();
+                double distance = Math.Ceiling(Math.Sqrt(Math.Pow((c.GetX() - circle.GetX()), 2) + Math.Pow((c.GetY() - circle.GetY()), 2)));
+                if (c != circle && distance <= (c.GetRadius() + circle.GetRadius()) && checkCircleBoundary(circle))
+                {
+                    circle.ChangeXDirection();
+                    circle.ChangeYDirection();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static void UpdateCircleSpeed(LogicCircle circle)
+        {
+            if (circle.GetY() - circle.GetRadius() <= 0 || circle.GetY() + circle.GetRadius() >= height)
+            {
+                circle.ChangeYDirection();
+            }
+            if (circle.GetX() + circle.GetRadius() >= width || circle.GetX() - circle.GetRadius() <= 0)
+            {
+                circle.ChangeXDirection();
             }
         }
-
-        public int GetX()
+        private static bool checkCircleBoundary(LogicCircle circle)
         {
-            return x;
+            return circle.GetY() - circle.GetRadius() <= 0 || circle.GetX() + circle.GetRadius() >= width || circle.GetY() + circle.GetRadius() >= height || circle.GetX() - circle.GetRadius() <= 0 ? false : true;
         }
 
-        public int GetY()
+        public override void CheckCollisionsWithBorders(Logic.LogicCircle cirle)
         {
-            return y;
+            UpdateCircleSpeed(cirle);
         }
 
-        public int GetR()
+        public override void CheckCollisionsWithCircles(Logic.LogicCircle cirle)
         {
-            return r;
+            CirclesCollision(cirle);
         }
 
-        public void SetX(int x)
+        public override void InterruptThreads()
         {
-            this.x = x;
+            DataLayer.InterruptThreads();
+            circlesCollection.Clear();
         }
 
-        public void SetY(int y)
+        public override void StartThreads()
         {
-            this.y = y;
-        }
-
-        public int GetSpeedX()
-        {
-            return speedX;
-        }
-
-        public int GetSpeedY()
-        {
-            return speedY;
-        }
-
-        public void SetSpeedX(int speedX)
-        {
-            this.speedX = speedX;
-        }
-
-        public void SetSpeedY(int speedY)
-        {
-            this.speedY = speedY;
+            DataLayer.StartThreads();
         }
     }
 }
