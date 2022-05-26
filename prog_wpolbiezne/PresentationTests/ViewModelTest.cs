@@ -5,15 +5,31 @@ using ViewModel;
 namespace Tests
 {
     [TestClass]
-    public class PoolViewModelTest
+    public class ViewModelTest
     {
-        ViewFull poolViewModel = new ViewFull();
+        ViewFull ViewModel = new ViewFull();
 
         [TestMethod]
         public void constructorTest()
         {
-            Assert.AreEqual(640, poolViewModel.WindowHeight);
-            Assert.AreEqual(1230, poolViewModel.WindowWidth);
+            Assert.AreEqual(480, ViewModel.WindowHeight);
+            Assert.AreEqual(800, ViewModel.WindowWidth);
+        }
+
+        [TestMethod]
+        public void CountTest()
+        {
+            Assert.AreEqual(ViewModel.Circles.Count, 0);
+        }
+        [TestMethod]
+        public void HeightTest()
+        {
+            Assert.AreEqual(ViewModel.WindowHeight, 480);
+        }
+        [TestMethod]
+        public void WidthTest()
+        {
+            Assert.AreEqual(ViewModel.WindowWidth, 800);
         }
     }
 }
