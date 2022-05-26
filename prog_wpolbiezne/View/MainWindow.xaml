@@ -3,19 +3,37 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:View"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        xmlns:local="clr-namespace:View" xmlns:viewmodel="clr-namespace:ViewModel;assembly=ViewModel"
+        Title="Zadanie2" Width="1100" Height="664" >
+    <Window.DataContext>
+        <viewmodel:ViewFull/>
+    </Window.DataContext>
     <Grid Background="LightGray">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="99*"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Label Content="Enter how much circles do you want: " HorizontalAlignment="Left" Margin="5,23,0,0" VerticalAlignment="Top" FontSize="20"/>
-        <TextBox HorizontalAlignment="Left" Height="25" Margin="350,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" RenderTransformOrigin="0.532,0.526"/>
-        <Button Content="Start" HorizontalAlignment="Left" Height="30" Margin="520,30,0,0" VerticalAlignment="Top" Width="90"/>
-        <Button Content="Stop" HorizontalAlignment="Left" Height="30" Margin="650,30,0,0" VerticalAlignment="Top" Width="90"/>
-        <Border BorderBrush="Black" BorderThickness="1" Margin="10,100,2,10"/>
-
+        <ItemsControl ItemsSource="{Binding Circles}" Width="{Binding WindowWidth}" Height="{Binding WindowHeight}" Margin="50,100,50,50" VerticalAlignment="Bottom">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas Background="DarkSlateGray"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                    <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Path Fill="{Binding Color}">
+                        <Path.Data>
+                            <EllipseGeometry RadiusX="{Binding Radius}" RadiusY="{Binding Radius}"/>
+                        </Path.Data>
+                    </Path>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Label Content="Enter how much circles do you want: " HorizontalAlignment="Left" Margin="200,23,0,0" VerticalAlignment="Top" FontSize="20"/>
+        <TextBox Text="{Binding Count}"  HorizontalAlignment="Left" Height="25" Margin="560,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" RenderTransformOrigin="0.532,0.526"/>
+        <Button Command="{Binding StartCommand}" Content="Start" HorizontalAlignment="Left" Height="30" Margin="750,30,0,0" VerticalAlignment="Top" Width="90"/>
+        <Button Command="{Binding StopCommand}" Content="Stop" HorizontalAlignment="Left" Height="30" Margin="850,30,0,0" VerticalAlignment="Top" Width="90" RenderTransformOrigin="0.496,0.957"/>
     </Grid>
 </Window>

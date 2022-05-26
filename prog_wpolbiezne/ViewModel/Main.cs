@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using Logic;
+using Model;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ViewModel;
@@ -7,22 +8,26 @@ namespace ViewModel
 {
     public class ViewFull : ViewModel
     {
+        public int WindowHeight { get; }
+        public int WindowWidth { get; }
+        public Board BoardModel { get; set; }
+
         public ViewFull()
         {
-            _circles = new();
-            WindowHeight = 640;
-            WindowWidth = 1230;
+            viewModelCircles = new();
+            //Wysokosc i szerokosc okienka z kulami
+            WindowHeight = 480;
+            WindowWidth = 800;
+
             BoardModel = new Board(WindowWidth, WindowHeight);
-            StartCommand = new CommandBase(() => Start());
-            StopCommand = new CommandBase(() => Stop());
+            StartCommand = new Commands(() => Start());
+            StopCommand = new Commands(() => Stop());
         }
 
-        public static void Main(String[] args)
-        {
-            Console.WriteLine("Hello");
-        }
         public ICommand StartCommand { get; set; }
         public ICommand StopCommand { get; set; }
+
+
 
         private int _count;
         public int Count
@@ -37,32 +42,36 @@ namespace ViewModel
 
         private async void Start()
         {
-            Circles = BoardModel.GetStartingCirclePositions();
+            foreach (LogicCircle logicCircle in BoardModel.GetStartingCirclePositions(Count))
+            {
+                ModelCircle circle = new ModelCircle(logicCircle.GetX(), logicCircle.GetY(), logicCircle.GetRadius(), logicCircle.GetColor());
+                viewModelCircles.Add(circle);
+                logicCircle.PropertyChanged += circle.Update!;
+            }
+            BoardModel.StartThreads();
             while (BoardModel.Animating)
             {
-                await Task.Delay(15);
-                Circles = BoardModel.MoveCircle(_circles);
+                await Task.Delay(10);
+                Circles = new ObservableCollection<ModelCircle>(viewModelCircles);
             }
         }
 
         private void Stop()
         {
             BoardModel.Animating = false;
+            BoardModel.InterruptThreads();
+            viewModelCircles.Clear();
         }
 
-        private ObservableCollection<Logic.Circle> _circles;
-        public ObservableCollection<Logic.Circle> Circles
+        private ObservableCollection<ModelCircle> viewModelCircles;
+        public ObservableCollection<ModelCircle> Circles
         {
-            get => _circles;
+            get => viewModelCircles;
             set
             {
-                _circles = value;
+                viewModelCircles = value;
                 OnPropertyChanged(nameof(Circles));
             }
         }
-        public int WindowHeight { get; }
-        public int WindowWidth { get; }
-
-        public Board BoardModel { get; set; }
     }
 }
