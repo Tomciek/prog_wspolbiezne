@@ -1,117 +1,64 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 
 namespace Data
 {
-    internal class Pool
+    public class Circle : INotifyPropertyChanged
     {
-        private readonly Object locked = new();
-        private List<Circle> circles = new();
-        private Collection<Thread> threads = new();
-        private double poolHeight;
-        private double poolWidth;
+        public event PropertyChangedEventHandler? PropertyChanged;
+        public int Radius { get; }
+        public double XPos { get; set; }
+        public double YPos { get; set; }
+        public string Color { get; set; }
+        public int XSpeed { get; set; }
+        public int YSpeed { get; set; }
+        public double Mass { get; set; }
+        public Thread Thread { get; set; }
 
-        public Pool(int amount, double widthOfCanvas, double heightOfCanvas)
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            this.poolHeight = heightOfCanvas;
-            this.poolWidth = widthOfCanvas;
-            CreateBalls(amount);
-            CreateThreads();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void CreateBalls(int amount)
+        public Circle(double XPos, double YPos)
         {
-
             Random rnd = new();
-            for (int i = 0; i < amount; i++)
+            this.Radius = 15;
+            this.XPos = XPos;
+            this.YPos = YPos;
+            this.Color = String.Format("#{0:X6}", rnd.Next(0x1000000));
+            this.Mass = 4.0;
+            while (XSpeed == 0)
             {
-                int xposition = rnd.Next(30, (int)poolWidth - 30);
-                int yposition = rnd.Next(30, (int)poolHeight - 30);
-                while (!CanCreate(xposition, yposition))
-                {
-                    xposition = rnd.Next(30, (int)poolWidth - 30);
-                    yposition = rnd.Next(30, (int)poolHeight - 30);
-                }
-                circles.Add(new Circle(xposition, yposition));
+                XSpeed = rnd.Next(-3, 4);
+            }
+            while (YSpeed == 0)
+            {
+                YSpeed = rnd.Next(-3, 4);
             }
         }
 
-        private bool CanCreate(int x, int y)
+        public void Move()
         {
-            if (circles.Count == 0) return true;
-            foreach (Circle c in circles)
-            {
-                double distance = Math.Sqrt(Math.Pow((c.XPos - x), 2) + Math.Pow((c.YPos - y), 2));
-                if (distance <= (2 * c.Radius + 20))
-                {
-                    return false;
-                }
-            }
-            return true;
+            this.XPos += this.XSpeed;
+            this.YPos += this.YSpeed;
+            OnPropertyChanged("Move");
         }
 
-        private void CreateThreads()
+        public void ChangeDirectionX()
         {
-            foreach (Circle c in circles)
-            {
-                Thread t = new Thread(() =>
-                {
-                    while (true)
-                    {
-                        try
-                        {
-                            Thread.Sleep(15);
-                            lock (locked)
-                            {
-                                c.Move();
-
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            break;
-                        }
-
-                    }
-                });
-                threads.Add(t);
-            }
+            this.XSpeed *= -1;
         }
 
-        public void StartThreads()
+        public void ChangeDirectionY()
         {
-            foreach (Thread t in threads)
-            {
-                t.Start();
-            }
+            this.YSpeed *= -1;
         }
-
-        public void InterruptThreads()
-        {
-            foreach (Thread t in threads)
-            {
-                t.Interrupt();
-            }
-        }
-
-        public List<Circle> GetCircles()
-        {
-            return circles;
-        }
-
-        public double GetPoolHeight()
-        {
-            return poolHeight;
-        }
-
-        public double GetPoolWidth()
-        {
-            return poolWidth;
-        }
-
     }
 }
+
