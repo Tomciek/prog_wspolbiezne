@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading;
 
@@ -10,8 +12,10 @@ namespace Data
     internal class Pool
     {
         private readonly Object locked = new();
-        private List<Circle> circles = new();
+        private readonly Object lockedToSave = new();
+        private List<AbstractCircle> circles = new();
         private Collection<Thread> threads = new();
+        private Collection<Thread> threadsToSave = new();
         private double poolHeight;
         private double poolWidth;
 
@@ -36,16 +40,16 @@ namespace Data
                     xposition = rnd.Next(30, (int)poolWidth - 30);
                     yposition = rnd.Next(30, (int)poolHeight - 30);
                 }
-                circles.Add(new Circle(xposition, yposition));
+                circles.Add(AbstractCircle.CreateCircle(new Vector2(xposition, yposition)));
             }
         }
 
         private bool CanCreate(int x, int y)
         {
             if (circles.Count == 0) return true;
-            foreach (Circle c in circles)
+            foreach (AbstractCircle c in circles)
             {
-                double distance = Math.Sqrt(Math.Pow((c.XPos - x), 2) + Math.Pow((c.YPos - y), 2));
+                double distance = Math.Sqrt(Math.Pow((c.Position.X - x), 2) + Math.Pow((c.Position.Y - y), 2));
                 if (distance <= (2 * c.Radius + 20))
                 {
                     return false;
@@ -60,31 +64,45 @@ namespace Data
             {
                 Thread t = new Thread(() =>
                 {
+                    Stopwatch timer = new Stopwatch();
+                    timer.Start();
                     while (true)
                     {
                         try
                         {
-                            Thread.Sleep(15);
                             lock (locked)
                             {
-                                c.Move();
-
+                                c.MoveCircle(timer);
                             }
+                            Thread.Sleep(15);
+                            timer.Reset();
+                            timer.Start();
                         }
                         catch (Exception e)
                         {
                             break;
                         }
-
                     }
                 });
                 threads.Add(t);
+                Thread tToSave = new Thread(() =>
+                {
+                    lock (lockedToSave)
+                    {
+                        c.PropertyChanged += c.Update!;
+                    }
+                });
+                threadsToSave.Add(tToSave);
             }
         }
 
         public void StartThreads()
         {
             foreach (Thread t in threads)
+            {
+                t.Start();
+            }
+            foreach (Thread t in threadsToSave)
             {
                 t.Start();
             }
@@ -96,9 +114,16 @@ namespace Data
             {
                 t.Interrupt();
             }
+            foreach (Thread t in threadsToSave)
+            {
+                t.Interrupt();
+            }
+            lock (lockedToSave)
+            {
+            }
         }
 
-        public List<Circle> GetCircles()
+        public List<AbstractCircle> GetCircles()
         {
             return circles;
         }
@@ -112,6 +137,5 @@ namespace Data
         {
             return poolWidth;
         }
-
     }
 }
