@@ -20,7 +20,7 @@ namespace Data
             this.pool = new Pool(amount, widthOfCanvas, heightOfCanvas);
         }
 
-        public override List<Circle> GetCircles()
+        public override List<AbstractCircle> GetCircles()
         {
             return pool.GetCircles();
         }

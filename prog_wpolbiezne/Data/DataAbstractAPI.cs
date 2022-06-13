@@ -11,7 +11,7 @@ namespace Data
 
         public abstract void CreatePoolWithBalls(int amount, double widthOfCanvas, double heightOfCanvas);
 
-        public abstract List <Circle> GetCircles();
+        public abstract List <AbstractCircle> GetCircles();
 
         public abstract void InterruptThreads();
 
