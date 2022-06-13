@@ -1,63 +1,57 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 
 namespace Data
 {
-    public class Circle : INotifyPropertyChanged
+    class Circle : AbstractCircle, INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
-        public int Radius { get; }
-        public double XPos { get; set; }
-        public double YPos { get; set; }
-        public string Color { get; set; }
-        public int XSpeed { get; set; }
-        public int YSpeed { get; set; }
-        public double Mass { get; set; }
-        public Thread Thread { get; set; }
+        public override event PropertyChangedEventHandler? PropertyChanged;
+
+        public Circle(Vector2 position)
+        {
+            Random rnd = new();
+            Radius = 15;
+            Position = position;
+            Speed = new();
+            while (Speed.X == 0 || Speed.Y == 0)
+            {
+                Speed = new(rnd.Next(-3, 4));
+            }
+        }
+
+        internal override void MoveCircle(Stopwatch timer)
+        {
+            int multiplier = (int)(timer.ElapsedMilliseconds / 1000);
+            Position += new Vector2(Speed.X + multiplier, Speed.Y + multiplier);
+            OnPropertyChanged("Move");
+        }
+
+        public override void ChangeDirectionX()
+        {
+            Speed = new Vector2(Speed.X * -1, Speed.Y);
+        }
+
+        public override void ChangeDirectionY()
+        {
+            Speed = new Vector2(Speed.X, Speed.Y * -1);
+        }
+
+        public void Update(Object s, PropertyChangedEventArgs e)
+        {
+            Logger.GetInstance().SaveDataAsYaml(new CircleInformation(Position.X, Position.Y, Speed.X, Speed.Y, this.GetHashCode()));
+        }
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public Circle(double XPos, double YPos)
-        {
-            Random rnd = new();
-            this.Radius = 15;
-            this.XPos = XPos;
-            this.YPos = YPos;
-            this.Color = String.Format("#{0:X6}", rnd.Next(0x1000000));
-            this.Mass = 4.0;
-            while (XSpeed == 0)
-            {
-                XSpeed = rnd.Next(-3, 4);
-            }
-            while (YSpeed == 0)
-            {
-                YSpeed = rnd.Next(-3, 4);
-            }
-        }
-
-        public void Move()
-        {
-            this.XPos += this.XSpeed;
-            this.YPos += this.YSpeed;
-            OnPropertyChanged("Move");
-        }
-
-        public void ChangeDirectionX()
-        {
-            this.XSpeed *= -1;
-        }
-
-        public void ChangeDirectionY()
-        {
-            this.YSpeed *= -1;
         }
     }
 }
