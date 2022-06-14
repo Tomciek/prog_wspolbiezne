@@ -1,4 +1,4 @@
-﻿using Data;
+using Data;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,14 +15,14 @@ namespace Logic
             return new LogicClass(data ?? DataAbstractAPI.Create());
         }
 
-        public abstract ObservableCollection<LogicCircle> CreateCircles(int numberOfCircles, double poolWidth, double poolHeight);
+        public abstract ObservableCollection<AbstractLogicCircle> CreateCircles(int numberOfCircles, double poolWidth, double poolHeight);
         
         public abstract void InterruptThreads();
 
         public abstract void StartThreads();
 
-        public abstract void CheckCollisionsWithBorders(LogicCircle cirle);
+        public abstract void CheckCollisionsWithBorders(AbstractLogicCircle circle);
 
-        public abstract void CheckCollisionsWithCircles(LogicCircle cirle);
+        public abstract void CheckCollisionsWithCircles(AbstractLogicCircle circle);
     }
 }
