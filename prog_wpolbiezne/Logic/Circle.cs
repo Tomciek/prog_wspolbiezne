@@ -1,87 +1,59 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Logic
 {
-    public class LogicCircle : INotifyPropertyChanged
+    internal class LogicCircle : AbstractLogicCircle, INotifyPropertyChanged
     {
-        private double _x;
-        private double _y;
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public override event PropertyChangedEventHandler? PropertyChanged;
+        private Vector2 _position;
+        private readonly Data.AbstractCircle circle;
 
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public LogicCircle(Data.AbstractCircle c)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            this.circle = c;
         }
 
-        public LogicCircle(Data.Circle c)
-        {
-            circle = c;
-        }
-
-        public void Update(Object s, PropertyChangedEventArgs e)
-        {
-            Data.Circle cirlce = (Data.Circle)s;
-            X = circle.XPos;
-            Y = circle.YPos;
-            LogicAbstractAPI.Create().CheckCollisionsWithBorders(this);
-            LogicAbstractAPI.Create().CheckCollisionsWithCircles(this);
-        }
-
-        private readonly Data.Circle circle;
-
-        public void ChangeXDirection()
+        public override void ChangeXDirection()
         {
             circle.ChangeDirectionX();
         }
 
-        public void ChangeYDirection()
+        public override void ChangeYDirection()
         {
             circle.ChangeDirectionY();
         }
 
-        public double GetX()
-        {
-            return X;
-        }
-
-        public double GetY()
-        {
-            return Y;
-        }
-
-        public double GetRadius()
+        public override double GetRadius()
         {
             return circle.Radius;
         }
-
-        public String GetColor()
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            return circle.Color;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        public double X
+        public override Vector2 Postion
         {
-            get => _x;
-            set
+            get => _position;
+            internal set
             {
-                _x = value;
-                OnPropertyChanged("X");
+                _position = value;
+                OnPropertyChanged("Position");
             }
         }
-        public double Y
+
+        public override void Update(Object s, PropertyChangedEventArgs e)
         {
-            get => _y;
-            set
-            {
-                _y = value;
-                OnPropertyChanged("Y");
-            }
+            Data.AbstractCircle cir = (Data.AbstractCircle)s;
+            Postion = cir.Position;
+            LogicAbstractAPI.Create().CheckCollisionsWithBorders(this);
+            LogicAbstractAPI.Create().CheckCollisionsWithCircles(this);
         }
     }
 }
