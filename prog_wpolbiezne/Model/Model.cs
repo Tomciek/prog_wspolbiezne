@@ -1,4 +1,4 @@
-﻿using Logic;
+using Logic;
 using System.Collections.ObjectModel;
 
 namespace Model
@@ -12,6 +12,8 @@ namespace Model
 
         private readonly LogicAbstractAPI? LogicAPI = default;
 
+        private bool _animating;
+
         public Board(double canvasWidth, double canvasHeight, LogicAbstractAPI? logicAPI = null)
         {
             _canvasWidth = canvasWidth;
@@ -19,7 +21,7 @@ namespace Model
             LogicAPI = logicAPI ?? LogicAbstractAPI.Create();
         }
 
-        public ObservableCollection<LogicCircle> GetStartingCirclePositions(int circleCount)
+        public ObservableCollection<AbstractLogicCircle> GetStartingCirclePositions(int circleCount)
         {
             Animating = true;
             return LogicAPI.CreateCircles(circleCount, _canvasWidth, _canvasHeight);
@@ -34,8 +36,6 @@ namespace Model
         {
             LogicAPI.StartThreads();
         }
-
-        private bool _animating;
 
         public bool Animating
         {
