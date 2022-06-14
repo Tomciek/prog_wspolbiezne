@@ -1,4 +1,4 @@
-﻿using Data;
+using Data;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,7 +11,7 @@ namespace Logic
     internal class LogicClass : LogicAbstractAPI
     {
         private readonly DataAbstractAPI DataLayer;
-        private static Collection<LogicCircle> circlesCollection = new();
+        private static Collection<AbstractLogicCircle> circlesCollection = new();
         private static double height;
         private static double width;
 
@@ -20,63 +20,14 @@ namespace Logic
             DataLayer = dataLayer;
         }
 
-        public override ObservableCollection<LogicCircle> CreateCircles(int numberOfCircles, double poolWidth, double poolHeight)
+        public override void CheckCollisionsWithBorders(Logic.AbstractLogicCircle circle)
         {
-            List<Circle> circles = new();
-            ObservableCollection<LogicCircle> logicCircles = new();
-            DataLayer.CreatePoolWithBalls(numberOfCircles, poolWidth, poolHeight);
-            height = DataLayer.GetPoolHeight();
-            width = DataLayer.GetPoolWidth();
-            circles = DataLayer.GetCircles();
-            foreach (Circle c in circles)
-            {
-                LogicCircle logicCircle = new LogicCircle(c);
-                c.PropertyChanged += logicCircle.Update!;
-                circlesCollection.Add(logicCircle);
-                logicCircles.Add(logicCircle);
-            }
-            return logicCircles;
+            UpdateCircleSpeed(circle);
         }
 
-        private static bool CirclesCollision(LogicCircle circle)
+        public override void CheckCollisionsWithCircles(Logic.AbstractLogicCircle circle)
         {
-            foreach (LogicCircle c in circlesCollection)
-            {
-                double distance = Math.Ceiling(Math.Sqrt(Math.Pow((c.GetX() - circle.GetX()), 2) + Math.Pow((c.GetY() - circle.GetY()), 2)));
-                if (c != circle && distance <= (c.GetRadius() + circle.GetRadius()) && checkCircleBoundary(circle))
-                {
-                    circle.ChangeXDirection();
-                    circle.ChangeYDirection();
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public static void UpdateCircleSpeed(LogicCircle circle)
-        {
-            if (circle.GetY() - circle.GetRadius() <= 0 || circle.GetY() + circle.GetRadius() >= height)
-            {
-                circle.ChangeYDirection();
-            }
-            if (circle.GetX() + circle.GetRadius() >= width || circle.GetX() - circle.GetRadius() <= 0)
-            {
-                circle.ChangeXDirection();
-            }
-        }
-        private static bool checkCircleBoundary(LogicCircle circle)
-        {
-            return circle.GetY() - circle.GetRadius() <= 0 || circle.GetX() + circle.GetRadius() >= width || circle.GetY() + circle.GetRadius() >= height || circle.GetX() - circle.GetRadius() <= 0 ? false : true;
-        }
-
-        public override void CheckCollisionsWithBorders(Logic.LogicCircle cirle)
-        {
-            UpdateCircleSpeed(cirle);
-        }
-
-        public override void CheckCollisionsWithCircles(Logic.LogicCircle cirle)
-        {
-            CirclesCollision(cirle);
+            CirclesCollision(circle);
         }
 
         public override void InterruptThreads()
@@ -88,6 +39,55 @@ namespace Logic
         public override void StartThreads()
         {
             DataLayer.StartThreads();
+        }
+
+        public override ObservableCollection<AbstractLogicCircle> CreateCircles(int numberOfCircles, double poolWidth, double poolHeight)
+        {
+            List<AbstractCircle> circles = new();
+            ObservableCollection<AbstractLogicCircle> logicCircles = new();
+            DataLayer.CreatePoolWithBalls(numberOfCircles, poolWidth, poolHeight);
+            height = DataLayer.GetPoolHeight();
+            width = DataLayer.GetPoolWidth();
+            circles = DataLayer.GetCircles();
+            foreach (AbstractCircle c in circles)
+            {
+                AbstractLogicCircle logicCircle = AbstractLogicCircle.CreateCircle(c);
+                c.PropertyChanged += logicCircle.Update!;
+                circlesCollection.Add(logicCircle);
+                logicCircles.Add(logicCircle);
+            }
+            return logicCircles;
+        }
+
+        private static bool CirclesCollision(AbstractLogicCircle circle)
+        {
+            foreach (AbstractLogicCircle c in circlesCollection)
+            {
+                double distance = Math.Ceiling(Math.Sqrt(Math.Pow((c.Postion.X - circle.Postion.X), 2) + Math.Pow((c.Postion.Y - circle.Postion.Y), 2)));
+                if (c != circle && distance <= (c.GetRadius() + circle.GetRadius()) && checkCircleBoundary(circle))
+                {
+                    circle.ChangeXDirection();
+                    circle.ChangeYDirection();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static void UpdateCircleSpeed(AbstractLogicCircle circle)
+        {
+            if (circle.Postion.Y - circle.GetRadius() <= 0 || circle.Postion.Y + circle.GetRadius() >= height)
+            {
+                circle.ChangeYDirection();
+            }
+            if (circle.Postion.X + circle.GetRadius() >= width || circle.Postion.X - circle.GetRadius() <= 0)
+            {
+                circle.ChangeXDirection();
+            }
+        }
+        private static bool checkCircleBoundary(AbstractLogicCircle circle)
+        {
+            return circle.Postion.Y - circle.GetRadius() <= 0 || circle.Postion.X + circle.GetRadius() >= width || circle.Postion.Y + circle.GetRadius() >= height || circle.Postion.X - circle.GetRadius() <= 0 ? false : true;
         }
     }
 }
